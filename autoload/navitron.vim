@@ -1,8 +1,10 @@
 func! s:InitBuffer() abort
   setlocal bufhidden=hide
   setlocal buftype=nofile
+  setlocal nomodifiable
   setlocal nobuflisted
   setlocal noswapfile
+  setlocal nonumber
   setlocal wrap
 endfunc
 
@@ -12,7 +14,6 @@ func! navitron#Initialize(path) abort
   endif
 
   call s:InitBuffer()
-  let l:paths = navitron#search#(a:path)
-  call map(l:paths, { idx, result -> result.name })
-  call setline('.', l:paths)
+  let l:paths = navitron#search#({ 'path': a:path })
+  call navitron#render#(l:paths)
 endfunc
