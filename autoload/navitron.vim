@@ -22,6 +22,7 @@ func! navitron#Explore(path) abort
     call s:InitBuffer(l:directory)
   endif
 
+  let b:navitron.path = l:directory
   let b:navitron.directory = navitron#search#({ 'path': l:directory })
   call navitron#render#(deepcopy(b:navitron.directory))
 endfunc
