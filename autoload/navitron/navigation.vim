@@ -33,7 +33,11 @@ endfunc
 
 func! navitron#navigation#ExploreListingUnderCursor() abort
   let l:selected_line = line('.') - 1
-  let l:directory = b:navitron.directory[l:selected_line]
+  let l:directory = get(b:navitron.directory, l:selected_line, v:null)
+
+  if l:directory is# v:null
+    return
+  endif
 
   if isdirectory(l:directory.path)
     call navitron#Explore(l:directory.path)
