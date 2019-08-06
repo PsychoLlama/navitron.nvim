@@ -1,21 +1,3 @@
-" Given the absolute file path, find the corresponding index in the directory
-" listing.
-func! s:FindDirectoryIndex(directories, query) abort
-  let l:index = 0
-
-  while l:index < len(a:directories)
-    let l:directory = a:directories[l:index]
-
-    if l:directory.path is# a:query
-      return l:index
-    endif
-
-    let l:index += 1
-  endwhile
-
-  return 0
-endfunc
-
 func! navitron#navigation#Up(count) abort
   let l:prev_dir_path = b:navitron.path
   let l:target_dir = b:navitron.path
@@ -27,8 +9,7 @@ func! navitron#navigation#Up(count) abort
   endwhile
 
   call navitron#Explore(l:target_dir)
-  let l:index_of_prev_dir = s:FindDirectoryIndex(b:navitron.directory, l:prev_dir_path)
-  call cursor(l:index_of_prev_dir + 1, 1)
+  call navitron#utils#SetCursorFocus(l:prev_dir_path)
 endfunc
 
 func! navitron#navigation#ExploreListingUnderCursor() abort
@@ -46,6 +27,20 @@ func! navitron#navigation#ExploreListingUnderCursor() abort
   endif
 endfunc
 
+func! navitron#navigation#CreateFile() abort
+  let l:file = input('New file: ')
+  let l:absolute_path = b:navitron.path . '/' . l:file
+
+  if l:file is# ''
+    return
+  endif
+
+  " Create the file, rerender, then set focus on the new file.
+  call writefile([], l:absolute_path)
+  call navitron#Explore(b:navitron.path)
+  call navitron#utils#SetCursorFocus(l:absolute_path)
+endfunc
+
 func! navitron#navigation#InitMappings() abort
   if exists('b:navitron.has_defined_mappings')
     return
@@ -57,4 +52,6 @@ func! navitron#navigation#InitMappings() abort
   nnoremap <silent><buffer>h :call navitron#navigation#Up(1)<cr>
   nnoremap <silent><buffer>l :call navitron#navigation#ExploreListingUnderCursor()<cr>
   nnoremap <silent><buffer><cr> :call navitron#navigation#ExploreListingUnderCursor()<cr>
+
+  nnoremap <silent><buffer>i :call navitron#navigation#CreateFile()<cr>
 endfunc

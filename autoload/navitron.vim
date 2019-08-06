@@ -35,11 +35,6 @@ func! navitron#Explore(path) abort
   endif
 
   if exists('b:navitron')
-    " Quit early. The directory is already open.
-    if b:navitron.path is# l:directory
-      return
-    endif
-
     call s:SaveCursorPosition()
   else
     call s:InitBuffer(l:directory)
