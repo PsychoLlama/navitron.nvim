@@ -6,4 +6,4 @@ func! s:DetectDirectories() abort
   endif
 endfunc
 
-autocmd BufNewFile,BufRead * call s:DetectDirectories()
+autocmd BufEnter * call s:DetectDirectories()
