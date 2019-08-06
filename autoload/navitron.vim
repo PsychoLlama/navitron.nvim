@@ -1,6 +1,7 @@
 func! s:InitBuffer(path) abort
   setlocal bufhidden=hide
   setlocal buftype=nofile
+  setlocal signcolumn=no
   setlocal nomodifiable
   setlocal nobuflisted
   setlocal noswapfile
