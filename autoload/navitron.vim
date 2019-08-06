@@ -1,4 +1,4 @@
-func! s:InitBuffer() abort
+func! s:InitBuffer(path) abort
   setlocal bufhidden=hide
   setlocal buftype=nofile
   setlocal nomodifiable
@@ -6,14 +6,22 @@ func! s:InitBuffer() abort
   setlocal noswapfile
   setlocal nonumber
   setlocal wrap
+
+  let b:navitron = { 'path': a:path }
+  call navitron#navigation#InitMappings()
 endfunc
 
-func! navitron#Initialize(path) abort
-  if !isdirectory(a:path)
-    throw 'Not a directory (navitron: ' . a:path . ')'
+func! navitron#Explore(path) abort
+  let l:directory = navitron#utils#TrimTrailingSlash(a:path)
+
+  if !isdirectory(l:directory)
+    throw 'Not a directory (navitron: ' . l:directory . ')'
   endif
 
-  call s:InitBuffer()
-  let l:paths = navitron#search#({ 'path': a:path })
+  if !exists('b:navitron')
+    call s:InitBuffer(l:directory)
+  endif
+
+  let l:paths = navitron#search#({ 'path': l:directory })
   call navitron#render#(l:paths)
 endfunc

@@ -1,1 +1,1 @@
-call navitron#Initialize(expand('%:p'))
+call navitron#Explore(expand('%:p'))

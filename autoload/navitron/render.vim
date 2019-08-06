@@ -1,6 +1,13 @@
 func! s:SetContents(contents) abort
   setlocal modifiable
-  call setline('.', a:contents)
+
+  let l:view = winsaveview()
+  call setline(1, a:contents)
+  if line('$') > len(a:contents)
+    execute 'silent ' . (len(a:contents) + 1) . ',$ delete'
+  endif
+  call winrestview(l:view)
+
   setlocal nomodifiable
 endfunc
 
