@@ -42,6 +42,6 @@ func! navitron#Explore(path) abort
 
   let b:navitron.path = l:directory
   let b:navitron.directory = navitron#search#({ 'path': l:directory })
-  call navitron#render#(deepcopy(b:navitron.directory))
+  call navitron#render#(b:navitron.directory)
   call s:RestoreCursorPosition()
 endfunc

@@ -54,4 +54,5 @@ func! navitron#navigation#InitMappings() abort
   nnoremap <silent><buffer><cr> :call navitron#navigation#ExploreListingUnderCursor()<cr>
 
   nnoremap <silent><buffer>i :call navitron#navigation#CreateFile()<cr>
+  nnoremap <silent><buffer>% :call navitron#navigation#CreateFile()<cr>
 endfunc
