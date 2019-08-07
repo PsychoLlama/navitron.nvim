@@ -12,9 +12,10 @@ endfunc
 
 func! s:AddPrettyName(index, result) abort
   let a:result.name = fnamemodify(a:result.path, ':t')
+  let a:result.pretty_name = a:result.name
 
   if a:result.type is# 'dir'
-    let a:result.name .= '/'
+    let a:result.pretty_name .= '/'
   endif
 
   return a:result
@@ -27,7 +28,7 @@ func! s:Order(item1, item2) abort
     return index(l:ordering, a:item1.type) - index(l:ordering, a:item2.type)
   endif
 
-  if a:item1.name < a:item2.name
+  if a:item1.pretty_name < a:item2.pretty_name
     return -1
   endif
 

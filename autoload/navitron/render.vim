@@ -13,7 +13,7 @@ func! s:SetContents(contents) abort
 endfunc
 
 func! s:GetName(index, result) abort
-  return a:result.name
+  return a:result.pretty_name
 endfunc
 
 func! s:Paint(paths) abort
@@ -25,9 +25,9 @@ func! s:Paint(paths) abort
     let l:index += 1
 
     if l:path.type is# 'dir'
-      let l:size = len(l:path.name) - 1
+      let l:size = len(l:path.name)
       call matchaddpos('navitronDirectory', [[l:index, 1, l:size]])
-      call matchaddpos('navitronDirectoryTrailingSlash', [[l:index, len(l:path.name), 1]])
+      call matchaddpos('navitronDirectoryTrailingSlash', [[l:index, len(l:path.pretty_name), 1]])
     endif
   endwhile
 endfunc
