@@ -74,6 +74,27 @@ func! navitron#navigation#DeleteFileOrDirectory() abort
   call navitron#Explore(b:navitron.path)
 endfunc
 
+func! navitron#navigation#MoveFileOrDirectory() abort
+  let l:entry = s:GetFileOrDirectoryUnderCursor()
+
+  if l:entry is# v:null
+    return
+  endif
+
+  let l:target_name = input({ 'prompt': 'Move: ' })
+  let l:new_path = fnamemodify(l:entry.path, ':h') . '/' . l:target_name
+
+  if !len(l:target_name)
+    return
+  endif
+
+  call system('mv ' . fnameescape(l:entry.path) . ' ' . fnameescape(l:new_path))
+  let l:entry.path = l:new_path
+
+  call navitron#Explore(b:navitron.path)
+  call navitron#utils#SetCursorFocus(l:entry.path)
+endfunc
+
 func! navitron#navigation#InitMappings() abort
   if exists('b:navitron.has_defined_mappings')
     return
@@ -91,4 +112,6 @@ func! navitron#navigation#InitMappings() abort
 
   nnoremap <silent><buffer>a :call navitron#navigation#CreateDirectory()<cr>
   nnoremap <silent><buffer>dd :call navitron#navigation#DeleteFileOrDirectory()<cr>
+
+  nnoremap <silent><buffer>r :call navitron#navigation#MoveFileOrDirectory()<cr>
 endfunc
