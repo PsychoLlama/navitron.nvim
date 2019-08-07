@@ -1,3 +1,8 @@
+func! s:GetFileOrDirectoryUnderCursor() abort
+  let l:index = line('.') - 1
+  return get(b:navitron.directory, l:index, v:null)
+endfunc
+
 func! navitron#navigation#Up(count) abort
   let l:prev_dir_path = b:navitron.path
   let l:target_dir = b:navitron.path
@@ -13,8 +18,7 @@ func! navitron#navigation#Up(count) abort
 endfunc
 
 func! navitron#navigation#ExploreListingUnderCursor() abort
-  let l:selected_line = line('.') - 1
-  let l:directory = get(b:navitron.directory, l:selected_line, v:null)
+  let l:directory = s:GetFileOrDirectoryUnderCursor()
 
   if l:directory is# v:null
     return
@@ -41,6 +45,22 @@ func! navitron#navigation#CreateFile() abort
   call navitron#utils#SetCursorFocus(l:absolute_path)
 endfunc
 
+func! navitron#navigation#DeleteFileOrDirectory() abort
+  let l:entry = s:GetFileOrDirectoryUnderCursor()
+
+  if l:entry is# v:null
+    return
+  endif
+
+  if confirm('Delete ' . l:entry.name . '?', "&Yes\n&No") != 1
+    return
+  endif
+
+  " This seems perfectly safe...
+  call system('rm -r ' . fnameescape(l:entry.path))
+  call navitron#Explore(b:navitron.path)
+endfunc
+
 func! navitron#navigation#InitMappings() abort
   if exists('b:navitron.has_defined_mappings')
     return
@@ -55,4 +75,6 @@ func! navitron#navigation#InitMappings() abort
 
   nnoremap <silent><buffer>i :call navitron#navigation#CreateFile()<cr>
   nnoremap <silent><buffer>% :call navitron#navigation#CreateFile()<cr>
+
+  nnoremap <silent><buffer>dd :call navitron#navigation#DeleteFileOrDirectory()<cr>
 endfunc
