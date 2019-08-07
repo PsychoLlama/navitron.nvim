@@ -45,6 +45,19 @@ func! navitron#navigation#CreateFile() abort
   call navitron#utils#SetCursorFocus(l:absolute_path)
 endfunc
 
+func! navitron#navigation#CreateDirectory() abort
+  let l:directory = input('New directory: ')
+  let l:absolute_path = b:navitron.path . '/' . l:directory
+
+  if !strlen(l:directory)
+    return
+  endif
+
+  call mkdir(l:absolute_path)
+  call navitron#Explore(b:navitron.path)
+  call navitron#utils#SetCursorFocus(l:absolute_path)
+endfunc
+
 func! navitron#navigation#DeleteFileOrDirectory() abort
   let l:entry = s:GetFileOrDirectoryUnderCursor()
 
@@ -76,5 +89,6 @@ func! navitron#navigation#InitMappings() abort
   nnoremap <silent><buffer>i :call navitron#navigation#CreateFile()<cr>
   nnoremap <silent><buffer>% :call navitron#navigation#CreateFile()<cr>
 
+  nnoremap <silent><buffer>a :call navitron#navigation#CreateDirectory()<cr>
   nnoremap <silent><buffer>dd :call navitron#navigation#DeleteFileOrDirectory()<cr>
 endfunc
