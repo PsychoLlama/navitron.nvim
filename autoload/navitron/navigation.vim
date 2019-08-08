@@ -75,7 +75,7 @@ func! navitron#navigation#DeleteFileOrDirectory() abort
 endfunc
 
 func! s:MoveEntry(entry, path) abort
-  call rename(a:entry.path, a:path)
+  let l:success = rename(a:entry.path, a:path)
   let a:entry.path = a:path
 
   call navitron#Explore(b:navitron.path)
@@ -89,14 +89,26 @@ func! navitron#navigation#MoveFileOrDirectoryRelative() abort
     return
   endif
 
-  let l:target_name = input({ 'prompt': 'Move: ' })
+  let l:target_name = input({ 'prompt': 'Rename: ' })
   let l:new_path = fnamemodify(l:entry.path, ':h') . '/' . l:target_name
 
-  if !len(l:target_name)
+  if len(l:target_name)
+    call s:MoveEntry(l:entry, l:new_path)
+  endif
+endfunc
+
+func! navitron#navigation#MoveFileOrDirectoryAbsolute() abort
+  let l:entry = s:GetFileOrDirectoryUnderCursor()
+
+  if l:entry is# v:null
     return
   endif
 
-  call s:MoveEntry(l:entry, l:new_path)
+  let l:new_path = input({ 'prompt': 'Move: ', 'default': l:entry.path })
+
+  if len(l:new_path)
+    call s:MoveEntry(l:entry, l:new_path)
+  endif
 endfunc
 
 func! navitron#navigation#InitMappings() abort
@@ -118,4 +130,5 @@ func! navitron#navigation#InitMappings() abort
   nnoremap <silent><buffer>dd :call navitron#navigation#DeleteFileOrDirectory()<cr>
 
   nnoremap <silent><buffer>r :call navitron#navigation#MoveFileOrDirectoryRelative()<cr>
+  nnoremap <silent><buffer>R :call navitron#navigation#MoveFileOrDirectoryAbsolute()<cr>
 endfunc
