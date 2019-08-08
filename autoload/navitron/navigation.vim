@@ -70,11 +70,19 @@ func! navitron#navigation#DeleteFileOrDirectory() abort
   endif
 
   " This seems perfectly safe...
-  call system('rm -r ' . fnameescape(l:entry.path))
+  call delete(l:entry.path, 'rf')
   call navitron#Explore(b:navitron.path)
 endfunc
 
-func! navitron#navigation#MoveFileOrDirectory() abort
+func! s:MoveEntry(entry, path) abort
+  call rename(a:entry.path, a:path)
+  let a:entry.path = a:path
+
+  call navitron#Explore(b:navitron.path)
+  call navitron#utils#SetCursorFocus(a:path)
+endfunc
+
+func! navitron#navigation#MoveFileOrDirectoryRelative() abort
   let l:entry = s:GetFileOrDirectoryUnderCursor()
 
   if l:entry is# v:null
@@ -88,11 +96,7 @@ func! navitron#navigation#MoveFileOrDirectory() abort
     return
   endif
 
-  call system('mv ' . fnameescape(l:entry.path) . ' ' . fnameescape(l:new_path))
-  let l:entry.path = l:new_path
-
-  call navitron#Explore(b:navitron.path)
-  call navitron#utils#SetCursorFocus(l:entry.path)
+  call s:MoveEntry(l:entry, l:new_path)
 endfunc
 
 func! navitron#navigation#InitMappings() abort
@@ -113,5 +117,5 @@ func! navitron#navigation#InitMappings() abort
   nnoremap <silent><buffer>a :call navitron#navigation#CreateDirectory()<cr>
   nnoremap <silent><buffer>dd :call navitron#navigation#DeleteFileOrDirectory()<cr>
 
-  nnoremap <silent><buffer>r :call navitron#navigation#MoveFileOrDirectory()<cr>
+  nnoremap <silent><buffer>r :call navitron#navigation#MoveFileOrDirectoryRelative()<cr>
 endfunc
