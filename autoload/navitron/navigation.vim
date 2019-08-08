@@ -104,7 +104,7 @@ func! navitron#navigation#MoveFileOrDirectoryAbsolute() abort
     return
   endif
 
-  let l:new_path = input({ 'prompt': 'Move: ', 'default': l:entry.path })
+  let l:new_path = input({ 'prompt': 'Move: ', 'default': l:entry.path, 'completion': 'file' })
 
   if len(l:new_path)
     call s:MoveEntry(l:entry, l:new_path)
