@@ -75,6 +75,9 @@ func! navitron#navigation#DeleteFileOrDirectory() abort
 endfunc
 
 func! s:MoveEntry(entry, path) abort
+  let l:new_path = substitute(a:path, '\v/$', '', '')
+  call mkdir(fnamemodify(l:new_path, ':h'), 'p')
+
   let l:success = rename(a:entry.path, a:path)
   let a:entry.path = a:path
 
