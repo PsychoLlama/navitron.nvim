@@ -2,14 +2,14 @@ highlight link navitronDirectoryTrailingSlash Constant
 highlight link navitronDirectory Directory
 
 func! s:SetContents(contents) abort
-  setlocal modifiable
+  setlocal modifiable noreadonly
 
   call setline(1, a:contents)
   if line('$') > len(a:contents)
     execute 'silent ' . (len(a:contents) + 1) . ',$ delete'
   endif
 
-  setlocal nomodifiable
+  setlocal nomodifiable readonly
 endfunc
 
 func! s:GetName(index, result) abort

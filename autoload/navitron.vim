@@ -10,11 +10,12 @@ func! s:InitBuffer(path) abort
   setlocal nomodifiable
   setlocal nobuflisted
   setlocal noswapfile
+  setlocal autoread
   setlocal nonumber
+  setlocal readonly
   setlocal wrap
 
   let b:navitron = {}
-  let b:navitron.previous_cursor_positions_by_path = {}
   let b:navitron.path = a:path
 
   call navitron#navigation#InitMappings()
@@ -25,6 +26,11 @@ func! navitron#Explore(path) abort
 
   if !isdirectory(l:directory)
     throw 'Not a directory (navitron: ' . l:directory . ')'
+  endif
+
+  " Without this, :file reports the wrong directory.
+  if expand('%:p') isnot# l:directory
+    execute 'edit ' . l:directory
   endif
 
   if !exists('b:navitron')

@@ -12,5 +12,5 @@ endif
 let s:did_load_filetype = v:true
 
 if isdirectory(expand('%:p')) && &filetype !=# 'navitron'
-  setfiletype navitron
+  setlocal filetype=navitron
 endif
