@@ -4,6 +4,8 @@ func! s:GetFileOrDirectoryUnderCursor() abort
 endfunc
 
 func! navitron#navigation#Up(count) abort
+  call navitron#cursor#SavePosition()
+
   let l:prev_dir_path = b:navitron.path
   let l:target_dir = b:navitron.path
   let l:dir_count = a:count
@@ -19,11 +21,11 @@ endfunc
 
 func! navitron#navigation#ExploreListingUnderCursor() abort
   let l:directory = s:GetFileOrDirectoryUnderCursor()
-
   if l:directory is# v:null
     return
   endif
 
+  call navitron#cursor#SavePosition()
   if isdirectory(l:directory.path)
     call navitron#Explore(l:directory.path)
   else
@@ -41,7 +43,7 @@ func! navitron#navigation#CreateFile() abort
 
   " Create the file, rerender, then set focus on the new file.
   call writefile([], l:absolute_path)
-  call navitron#Explore(b:navitron.path)
+  call navitron#render#()
   call navitron#utils#SetCursorFocus(l:absolute_path)
 endfunc
 
@@ -54,7 +56,7 @@ func! navitron#navigation#CreateDirectory() abort
   endif
 
   call mkdir(l:absolute_path)
-  call navitron#Explore(b:navitron.path)
+  call navitron#render#()
   call navitron#utils#SetCursorFocus(l:absolute_path)
 endfunc
 
@@ -71,7 +73,8 @@ func! navitron#navigation#DeleteFileOrDirectory() abort
 
   " This seems perfectly safe...
   call delete(l:entry.path, 'rf')
-  call navitron#Explore(b:navitron.path)
+  call navitron#cursor#SavePosition()
+  call navitron#render#()
 endfunc
 
 func! s:MoveEntry(entry, path) abort
@@ -81,7 +84,7 @@ func! s:MoveEntry(entry, path) abort
   let l:success = rename(a:entry.path, a:path)
   let a:entry.path = a:path
 
-  call navitron#Explore(b:navitron.path)
+  call navitron#render#()
   call navitron#utils#SetCursorFocus(a:path)
 endfunc
 

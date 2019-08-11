@@ -32,8 +32,10 @@ func! s:Paint(paths) abort
   endwhile
 endfunc
 
-func! navitron#render#(paths) abort
-  let l:names = map(copy(a:paths), function('s:GetName'))
+func! navitron#render#() abort
+  let b:navitron.directory = navitron#search#({ 'path': b:navitron.path })
+  let l:names = map(copy(b:navitron.directory), function('s:GetName'))
   call s:SetContents(l:names)
-  call s:Paint(a:paths)
+  call s:Paint(b:navitron.directory)
+  call navitron#cursor#RestorePosition()
 endfunc
