@@ -38,13 +38,21 @@ func! navitron#navigation#CreateFile() abort
   let l:absolute_path = b:navitron.path . '/' . l:file
 
   if l:file is# ''
-    return
+    return v:false
   endif
 
   " Create the file, rerender, then set focus on the new file.
   call writefile([], l:absolute_path)
   call navitron#render#()
   call navitron#utils#SetCursorFocus(l:absolute_path)
+
+  return v:true
+endfunc
+
+func! navitron#navigation#CreateAndEditFile() abort
+  if navitron#navigation#CreateFile()
+    call navitron#navigation#ExploreListingUnderCursor()
+  endif
 endfunc
 
 func! navitron#navigation#CreateDirectory() abort
@@ -52,12 +60,20 @@ func! navitron#navigation#CreateDirectory() abort
   let l:absolute_path = b:navitron.path . '/' . l:directory
 
   if !strlen(l:directory)
-    return
+    return v:false
   endif
 
   call mkdir(l:absolute_path)
   call navitron#render#()
   call navitron#utils#SetCursorFocus(l:absolute_path)
+
+  return v:true
+endfunc
+
+func! navitron#navigation#CreateAndExploreDirectory() abort
+  if navitron#navigation#CreateDirectory()
+    call navitron#navigation#ExploreListingUnderCursor()
+  endif
 endfunc
 
 func! navitron#navigation#DeleteFileOrDirectory() abort
@@ -134,6 +150,9 @@ func! navitron#navigation#InitMappings() abort
 
   nnoremap <silent><buffer>a :call navitron#navigation#CreateDirectory()<cr>
   nnoremap <silent><buffer>dd :call navitron#navigation#DeleteFileOrDirectory()<cr>
+
+  nnoremap <silent><buffer>I :call navitron#navigation#CreateAndEditFile()<cr>
+  nnoremap <silent><buffer>A :call navitron#navigation#CreateAndExploreDirectory()<cr>
 
   nnoremap <silent><buffer>r :call navitron#navigation#MoveFileOrDirectoryRelative()<cr>
   nnoremap <silent><buffer>R :call navitron#navigation#MoveFileOrDirectoryAbsolute()<cr>
