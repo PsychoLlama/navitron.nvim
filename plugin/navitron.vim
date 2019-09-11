@@ -1,9 +1,10 @@
 func! s:ClearHighlights() abort
-  if &filetype ==# 'navitron'
-    return
+  if isdirectory(expand('%:p'))
+    setfiletype navitron
+    call navitron#Explore(expand('%:p'))
+  else
+    call navitron#render#Clear()
   endif
-
-  call navitron#render#Clear()
 endfunc
 
 augroup navitron_syntax
