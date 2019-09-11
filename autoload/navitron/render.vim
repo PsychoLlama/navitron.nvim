@@ -25,21 +25,16 @@ func! s:Paint(paths) abort
   call clearmatches()
   let l:index = 0
 
-  let l:matches = { 'directories': [], 'slashes': [] }
-
   while l:index < len(a:paths)
     let l:path = a:paths[l:index]
     let l:index += 1
 
     if l:path.type is# 'dir'
       let l:size = len(l:path.name)
-      let l:matches.directories += [[l:index, 1, l:size]]
-      let l:matches.slashes += [[l:index, len(l:path.pretty_name), 1]]
+      call matchaddpos(s:SyntaxTokens.Directory, [[l:index, 1, l:size]])
+      call matchaddpos(s:SyntaxTokens.Slash, [[l:index, len(l:path.pretty_name), 1]])
     endif
   endwhile
-
-  call matchaddpos(s:SyntaxTokens.Directory, l:matches.directories)
-  call matchaddpos(s:SyntaxTokens.Slash, l:matches.slashes)
 endfunc
 
 func! navitron#render#() abort
