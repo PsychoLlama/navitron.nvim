@@ -156,4 +156,7 @@ func! navitron#navigation#InitMappings() abort
 
   nnoremap <silent><buffer>r :call navitron#navigation#MoveFileOrDirectoryRelative()<cr>
   nnoremap <silent><buffer>R :call navitron#navigation#MoveFileOrDirectoryAbsolute()<cr>
+
+  nnoremap <silent><buffer>f :call navitron#fuzzy#FindFile()<cr>
+  nnoremap <silent><buffer>t :call navitron#fuzzy#FindDir()<cr>
 endfunc
