@@ -2,8 +2,13 @@ func! s:EditFile(file) abort
   execute 'edit ' . fnameescape(a:file)
 endfunc
 
+func! s:ExploreDirectory(dir) abort
+  let l:absolute_path = fnamemodify(a:dir, ':p')
+  call navitron#Explore(l:absolute_path)
+endfunc
+
 func! s:Search(source, Callback) abort
-  call skim#run({ 'source': a:source, 'sink': a:Callback })
+  call skim#run({ 'dir': b:navitron.path, 'source': a:source, 'sink': a:Callback })
 endfunc
 
 func! s:GetDownwardSearchPattern(type) abort
@@ -26,7 +31,7 @@ func! navitron#fuzzy#FindFile() abort
 endfunc
 
 func! navitron#fuzzy#FindDir() abort
-  let l:Callback = function('navitron#Explore')
+  let l:Callback = function('s:ExploreDirectory')
   let l:pattern = s:GetDownwardSearchPattern('d')
 
   call s:Search(l:pattern, l:Callback)
