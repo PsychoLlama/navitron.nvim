@@ -7,8 +7,21 @@ func! s:ExploreDirectory(dir) abort
   call navitron#Explore(l:absolute_path)
 endfunc
 
-func! s:Search(source, Callback) abort
-  call skim#run({ 'dir': b:navitron.path, 'source': a:source, 'sink': a:Callback })
+func! s:Search(source, Callback)
+  let l:options = { 'dir': b:navitron.path, 'source': a:source, 'sink': a:Callback }
+
+  if exists('*skim#run')
+    return skim#run(l:options)
+  endif
+
+  if exists('*fzf#run')
+    return fzf#run(l:options)
+  endif
+
+  echohl Error
+  echon 'Error:'
+  echohl Clear
+  echon ' No installed fuzzy finder (fzf/skim).'
 endfunc
 
 func! s:GetDownwardSearchPattern(type) abort
