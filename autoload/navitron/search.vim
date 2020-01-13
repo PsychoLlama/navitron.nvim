@@ -1,3 +1,15 @@
+let s:IGNORED_LISTINGS = {
+      \   '..': v:true,
+      \   '.': v:true,
+      \ }
+
+func! s:ReadDirectory(directory) abort
+  let l:hidden = glob(a:directory . '/*', v:false, v:true, v:true)
+  let l:visible = glob(a:directory . '/.*', v:false, v:true, v:true)
+
+  return l:hidden + l:visible
+endfunc
+
 func! s:NormalizePath(index, result) abort
   let a:result.path = navitron#utils#TrimTrailingSlash(a:result.path)
 
@@ -35,14 +47,22 @@ func! s:Order(item1, item2) abort
   return 1
 endfunc
 
+" TODO: Make this configurable by the end user.
+func! s:ShouldShowEntry(index, entry) abort
+  let l:is_ignored = get(s:IGNORED_LISTINGS, a:entry.name, v:false)
+  return !l:is_ignored
+endfunc
+
 func! navitron#search#(options) abort
   let l:path = a:options.path
-  let l:paths = glob(l:path . '/{.,}*', v:false, v:true, v:true)
+  let l:paths = s:ReadDirectory(l:path)
 
   call map(l:paths, function('s:AddMetadata'))
   call map(l:paths, function('s:NormalizePath'))
   call map(l:paths, function('s:AddPrettyName'))
   call sort(l:paths, function('s:Order'))
+  call filter(l:paths, function('s:ShouldShowEntry'))
+  call uniq(l:paths)
 
   return l:paths
 endfunc
