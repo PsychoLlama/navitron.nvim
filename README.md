@@ -3,6 +3,15 @@ A better file browser for vim.
 
 :construction: Work in Progress :construction:
 
+## Usage
+Most vim implementations ship with netrw. You'll need to disable it before navitron can take over. Put this in your vimrc:
+
+```viml
+let g:loaded_netrwPlugin = v:true
+```
+
+Once you've installed navitron, just point vim at a directory.
+
 ## Features
 - Seamless file and directory management.
 - Vim-like keybindings (`dd` deletes a file or directory, `hjkl` navigates,
