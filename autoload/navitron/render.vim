@@ -1,12 +1,12 @@
 highlight link navitronDirectoryTrailingSlash Constant
 highlight link navitronDirectory Directory
 
-let s:SyntaxTokens = {
+let s:syntax_tokens = {
       \   'Directory': 'navitronDirectory',
       \   'Slash': 'navitronDirectoryTrailingSlash',
       \ }
 
-func! s:SetContents(contents) abort
+func! s:set_contents(contents) abort
   setlocal modifiable noreadonly
 
   call setline(1, a:contents)
@@ -17,11 +17,11 @@ func! s:SetContents(contents) abort
   setlocal nomodifiable readonly
 endfunc
 
-func! s:GetName(index, result) abort
+func! s:get_name(index, result) abort
   return a:result.pretty_name
 endfunc
 
-func! s:Paint(paths) abort
+func! s:paint(paths) abort
   call clearmatches()
   let l:index = 0
 
@@ -31,37 +31,37 @@ func! s:Paint(paths) abort
 
     if l:path.type is# 'dir'
       let l:size = len(l:path.name)
-      call matchaddpos(s:SyntaxTokens.Directory, [[l:index, 1, l:size]])
-      call matchaddpos(s:SyntaxTokens.Slash, [[l:index, len(l:path.pretty_name), 1]])
+      call matchaddpos(s:syntax_tokens.Directory, [[l:index, 1, l:size]])
+      call matchaddpos(s:syntax_tokens.Slash, [[l:index, len(l:path.pretty_name), 1]])
     endif
   endwhile
 endfunc
 
 func! navitron#render#() abort
   let b:navitron.directory = navitron#search#({ 'path': b:navitron.path })
-  let l:names = map(copy(b:navitron.directory), function('s:GetName'))
-  call s:SetContents(l:names)
-  call s:Paint(b:navitron.directory)
-  call navitron#cursor#RestorePosition()
+  let l:names = map(copy(b:navitron.directory), function('s:get_name'))
+  call s:set_contents(l:names)
+  call s:paint(b:navitron.directory)
+  call navitron#cursor#restore_position()
 endfunc
 
-func! s:GetNavitronTokens() abort
+func! s:get_navitron_tokens() abort
   let l:tokens = {}
-  for l:token in values(s:SyntaxTokens)
+  for l:token in values(s:syntax_tokens)
     let l:tokens[l:token] = v:true
   endfor
 
   return l:tokens
 endfunc
 
-func! s:IsNavitronSyntaxToken(tokens, index, token) abort
+func! s:is_navitron_syntax_token(tokens, index, token) abort
   return has_key(a:tokens, a:token.group)
 endfunc
 
-func! navitron#render#Clear() abort
+func! navitron#render#clear() abort
   let l:matches = getmatches()
-  let l:tokens = s:GetNavitronTokens()
-  call filter(l:matches, function('s:IsNavitronSyntaxToken', [l:tokens]))
+  let l:tokens = s:get_navitron_tokens()
+  call filter(l:matches, function('s:is_navitron_syntax_token', [l:tokens]))
 
   for l:highlight in l:matches
     call matchdelete(l:highlight.id)

@@ -1,13 +1,13 @@
-func! s:EditFile(file) abort
+func! s:edit_file(file) abort
   execute 'edit ' . fnameescape(a:file)
 endfunc
 
-func! s:ExploreDirectory(dir) abort
+func! s:explore_directory(dir) abort
   let l:absolute_path = fnamemodify(a:dir, ':p')
-  call navitron#Explore(l:absolute_path)
+  call navitron#explore(l:absolute_path)
 endfunc
 
-func! s:Search(source, Callback)
+func! s:search(source, Callback)
   let l:options = { 'dir': b:navitron.path, 'source': a:source, 'sink': a:Callback }
 
   if exists('*skim#run')
@@ -24,7 +24,7 @@ func! s:Search(source, Callback)
   echon ' No installed fuzzy finder (fzf/skim).'
 endfunc
 
-func! s:GetDownwardSearchPattern(type) abort
+func! s:get_downward_search_pattern(type) abort
   if executable('fd')
     return 'fd -t ' . a:type
   endif
@@ -36,16 +36,16 @@ func! s:GetDownwardSearchPattern(type) abort
   throw "Can't find a search program (e.g. 'find')."
 endfunc
 
-func! navitron#fuzzy#FindFile() abort
-  let l:Callback = function('s:EditFile')
-  let l:pattern = s:GetDownwardSearchPattern('f')
+func! navitron#fuzzy#find_file() abort
+  let l:Callback = function('s:edit_file')
+  let l:pattern = s:get_downward_search_pattern('f')
 
-  call s:Search(l:pattern, l:Callback)
+  call s:search(l:pattern, l:Callback)
 endfunc
 
-func! navitron#fuzzy#FindDir() abort
-  let l:Callback = function('s:ExploreDirectory')
-  let l:pattern = s:GetDownwardSearchPattern('d')
+func! navitron#fuzzy#find_dir() abort
+  let l:Callback = function('s:explore_directory')
+  let l:pattern = s:get_downward_search_pattern('d')
 
-  call s:Search(l:pattern, l:Callback)
+  call s:search(l:pattern, l:Callback)
 endfunc

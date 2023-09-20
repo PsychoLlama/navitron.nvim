@@ -1,13 +1,13 @@
-func! s:ClearHighlights() abort
+func! s:clear_highlights() abort
   if isdirectory(expand('%:p'))
     setfiletype navitron
-    call navitron#Explore(expand('%:p'))
+    call navitron#explore(expand('%:p'))
   else
-    call navitron#render#Clear()
+    call navitron#render#clear()
   endif
 endfunc
 
 augroup navitron_syntax
   autocmd!
-  autocmd BufEnter * :call s:ClearHighlights()
+  autocmd BufEnter * :call s:clear_highlights()
 augroup END

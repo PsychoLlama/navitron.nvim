@@ -1,5 +1,5 @@
 " Given the absolute file path, find the corresponding directory index.
-func! s:FindDirectoryIndex(directories, query) abort
+func! s:find_directoryIndex(directories, query) abort
   let l:index = 0
 
   while l:index < len(a:directories)
@@ -15,7 +15,7 @@ func! s:FindDirectoryIndex(directories, query) abort
   return 0
 endfunc
 
-func! navitron#utils#TrimTrailingSlash(path) abort
+func! navitron#utils#trim_trailing_slash(path) abort
   if a:path !~# '\v./$'
     return a:path
   endif
@@ -23,7 +23,7 @@ func! navitron#utils#TrimTrailingSlash(path) abort
   return substitute(a:path, '\v/$', '', '')
 endfunc
 
-func! navitron#utils#SetCursorFocus(path) abort
-  let l:index_of_prev_dir = s:FindDirectoryIndex(b:navitron.directory, a:path)
+func! navitron#utils#set_cursor_focus(path) abort
+  let l:index_of_prev_dir = s:find_directoryIndex(b:navitron.directory, a:path)
   call cursor(l:index_of_prev_dir + 1, 1)
 endfunc

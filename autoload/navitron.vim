@@ -3,7 +3,7 @@ if !exists('g:navitron')
   let g:navitron.cursor_positions = {}
 endif
 
-func! s:InitBuffer(path) abort
+func! s:init_buffer(path) abort
   setlocal bufhidden=hide
   setlocal buftype=nofile
   setlocal signcolumn=no
@@ -18,11 +18,11 @@ func! s:InitBuffer(path) abort
   let b:navitron = {}
   let b:navitron.path = a:path
 
-  call navitron#navigation#InitMappings()
+  call navitron#navigation#init_mappings()
 endfunc
 
-func! navitron#Explore(path) abort
-  let l:directory = navitron#utils#TrimTrailingSlash(a:path)
+func! navitron#explore(path) abort
+  let l:directory = navitron#utils#trim_trailing_slash(a:path)
 
   if !isdirectory(l:directory)
     throw 'Not a directory (navitron: ' . l:directory . ')'
@@ -34,7 +34,7 @@ func! navitron#Explore(path) abort
   endif
 
   if !exists('b:navitron')
-    call s:InitBuffer(l:directory)
+    call s:init_buffer(l:directory)
   endif
 
   let b:navitron.path = l:directory
