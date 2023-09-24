@@ -17,8 +17,6 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
       })
 
       require('navitron').open(path)
-    else
-      vim.call('navitron#render#clear')
     end
   end,
 })
