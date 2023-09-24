@@ -1,10 +1,12 @@
+let s:navitron = luaeval("require('navitron')")
+
 func! s:edit_file(file) abort
   execute 'edit ' . fnameescape(a:file)
 endfunc
 
 func! s:explore_directory(dir) abort
   let l:absolute_path = fnamemodify(a:dir, ':p')
-  call navitron#explore(l:absolute_path)
+  call s:navitron.open(l:absolute_path)
 endfunc
 
 func! s:search(source, Callback)

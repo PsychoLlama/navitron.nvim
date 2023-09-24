@@ -1,4 +1,5 @@
 let s:utils = luaeval("require('navitron/utils')")
+let s:navitron = luaeval("require('navitron')")
 
 func! s:get_file_or_directory_under_cursor() abort
   let l:index = line('.') - 1
@@ -17,7 +18,7 @@ func! navitron#navigation#up(count) abort
     let l:dir_count -= 1
   endwhile
 
-  call navitron#explore(l:target_dir)
+  call s:navitron.open(l:target_dir)
   call s:utils.focus_cursor_over_path(l:prev_dir_path)
 endfunc
 
@@ -29,7 +30,7 @@ func! navitron#navigation#explore_listing_under_cursor() abort
 
   lua require('navitron/cursor').save_position()
   if isdirectory(l:directory.path)
-    call navitron#explore(l:directory.path)
+    call s:navitron.open(l:directory.path)
   else
     execute 'edit ' . fnameescape(l:directory.path)
   endif
