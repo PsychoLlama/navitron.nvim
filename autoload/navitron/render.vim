@@ -42,7 +42,7 @@ func! navitron#render#() abort
   let l:names = map(copy(b:navitron.directory), function('s:get_name'))
   call s:set_contents(l:names)
   call s:paint(b:navitron.directory)
-  call navitron#cursor#restore_position()
+  lua require('navitron/cursor').restore_position()
 endfunc
 
 func! s:get_navitron_tokens() abort

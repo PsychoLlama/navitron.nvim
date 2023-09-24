@@ -4,7 +4,7 @@ func! s:get_file_or_directory_under_cursor() abort
 endfunc
 
 func! navitron#navigation#up(count) abort
-  call navitron#cursor#save_position()
+  lua require('navitron/cursor').save_position()
 
   let l:prev_dir_path = b:navitron.path
   let l:target_dir = b:navitron.path
@@ -25,7 +25,7 @@ func! navitron#navigation#explore_listing_under_cursor() abort
     return
   endif
 
-  call navitron#cursor#save_position()
+  lua require('navitron/cursor').save_position()
   if isdirectory(l:directory.path)
     call navitron#explore(l:directory.path)
   else
@@ -89,7 +89,7 @@ func! navitron#navigation#delete_file_or_directory() abort
 
   " This seems perfectly safe...
   call delete(l:entry.path, 'rf')
-  call navitron#cursor#save_position()
+  lua require('navitron/cursor').save_position()
   call navitron#render#()
 endfunc
 
