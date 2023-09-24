@@ -1,3 +1,5 @@
+let s:utils = luaeval("require('navitron/utils')")
+
 if !exists('g:navitron')
   let g:navitron = {}
   let g:navitron.cursor_positions = {}
@@ -22,7 +24,7 @@ func! s:init_buffer(path) abort
 endfunc
 
 func! navitron#explore(path) abort
-  let l:directory = navitron#utils#trim_trailing_slash(a:path)
+  let l:directory = s:utils.trim_trailing_slash(a:path)
 
   if !isdirectory(l:directory)
     throw 'Not a directory (navitron: ' . l:directory . ')'

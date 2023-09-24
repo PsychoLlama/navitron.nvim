@@ -3,6 +3,8 @@ let s:IGNORED_LISTINGS = {
       \   '.': v:true,
       \ }
 
+let s:utils = luaeval("require('navitron/utils')")
+
 func! s:read_directory(directory) abort
   let l:hidden = glob(a:directory . '/*', v:false, v:true, v:true)
   let l:visible = glob(a:directory . '/.*', v:false, v:true, v:true)
@@ -11,7 +13,7 @@ func! s:read_directory(directory) abort
 endfunc
 
 func! s:normalize_path(index, result) abort
-  let a:result.path = navitron#utils#trim_trailing_slash(a:result.path)
+  let a:result.path = s:utils.trim_trailing_slash(a:result.path)
 
   return a:result
 endfunc

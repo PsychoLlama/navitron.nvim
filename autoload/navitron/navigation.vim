@@ -1,3 +1,5 @@
+let s:utils = luaeval("require('navitron/utils')")
+
 func! s:get_file_or_directory_under_cursor() abort
   let l:index = line('.') - 1
   return get(b:navitron.directory, l:index, v:null)
@@ -16,7 +18,7 @@ func! navitron#navigation#up(count) abort
   endwhile
 
   call navitron#explore(l:target_dir)
-  call navitron#utils#set_cursor_focus(l:prev_dir_path)
+  call s:utils.focus_cursor_over_path(l:prev_dir_path)
 endfunc
 
 func! navitron#navigation#explore_listing_under_cursor() abort
@@ -44,7 +46,7 @@ func! navitron#navigation#create_file() abort
   " Create the file, rerender, then set focus on the new file.
   call writefile([], l:absolute_path)
   call navitron#render#()
-  call navitron#utils#set_cursor_focus(l:absolute_path)
+  call s:utils.focus_cursor_over_path(l:absolute_path)
 
   return v:true
 endfunc
@@ -65,7 +67,7 @@ func! navitron#navigation#create_directory() abort
 
   call mkdir(l:absolute_path)
   call navitron#render#()
-  call navitron#utils#set_cursor_focus(l:absolute_path)
+  call s:utils.focus_cursor_over_path(l:absolute_path)
 
   return v:true
 endfunc
@@ -101,7 +103,7 @@ func! s:move_entry(entry, path) abort
   let a:entry.path = a:path
 
   call navitron#render#()
-  call navitron#utils#set_cursor_focus(a:path)
+  call s:utils.focus_cursor_over_path(a:path)
 endfunc
 
 func! navitron#navigation#move_file_or_directory_relative() abort
