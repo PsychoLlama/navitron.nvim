@@ -23,7 +23,7 @@ end
 return {
   render = function()
     local state = vim.b.navitron
-    state.directory = vim.call('navitron#search#', { path = state.path })
+    state.directory = require('navitron.search') { path = state.path }
     vim.b.navitron = state
 
     local contents = vim.fn.map(vim.fn.copy(state.directory), describe)

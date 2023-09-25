@@ -19,9 +19,7 @@ local function initialize_navitron_buffer(path)
 
   vim.b.navitron = {
     path = normalized_path,
-    directory = vim.call('navitron#search#', {
-      path = normalized_path,
-    }),
+    directory = require('navitron.search') { path = normalized_path },
   }
 
   vim.call('navitron#navigation#init_mappings')
