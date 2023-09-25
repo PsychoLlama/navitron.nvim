@@ -44,4 +44,16 @@ return {
 
     require('navitron.render').render()
   end,
+
+  setup = function()
+    -- Officially recommended way to disable netrw.
+    -- See `:help netrw-noload`
+    vim.g.loaded_netrw = true
+    vim.g.loaded_netrwPlugin = true
+
+    -- Initialize global state.
+    vim.g.navitron = {
+      cursor_positions = {},
+    }
+  end,
 }
