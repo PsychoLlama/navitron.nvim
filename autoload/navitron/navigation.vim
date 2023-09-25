@@ -160,6 +160,6 @@ func! navitron#navigation#init_mappings() abort
   nnoremap <silent><buffer>r :call navitron#navigation#move_file_or_directory_relative()<cr>
   nnoremap <silent><buffer>R :call navitron#navigation#move_file_or_directory_absolute()<cr>
 
-  nnoremap <silent><buffer>f :call navitron#fuzzy#find_file()<cr>
-  nnoremap <silent><buffer>t :call navitron#fuzzy#find_dir()<cr>
+  nnoremap <silent><buffer>f :lua require('navitron/fuzzy').find_file()<cr>
+  nnoremap <silent><buffer>t :lua require('navitron/fuzzy').find_dir()<cr>
 endfunc
