@@ -7,7 +7,7 @@ local function create_region(group_name, marker)
   vim.cmd.syntax(
     'region',
     group_name,
-    'start=/^' .. marker .. ':/',
+    'start=/^' .. marker .. ':[^.]/',
     'end=/$/',
     'contains=navitronEntryType'
   )
@@ -23,9 +23,33 @@ vim.cmd.syntax(
   'contained'
 )
 
--- Directory entry
-create_region('navitronDirectoryEntry', 'dir')
-create_region('navitronFileEntry', 'file')
+-- File entry
+vim.cmd.syntax(
+  'region',
+  'navitronFileEntry',
+  'start=/^file:[^.]/',
+  'end=/$/',
+  'contains=navitronEntryType'
+)
+
+-- File entry
+vim.cmd.syntax(
+  'region',
+  'navitronDirectoryEntry',
+  'start=/^dir:[^.]/',
+  'end=/$/',
+  'contains=navitronEntryType'
+)
+
+-- Hidden file/directory entry
+vim.cmd.syntax(
+  'region',
+  'navitronHiddenEntry',
+  'start=/\\v^(dir|file):\\./',
+  'end=/$/',
+  'contains=navitronEntryType'
+)
 
 link('navitronDirectoryEntry', 'Directory')
 link('navitronFileEntry', 'Normal')
+link('navitronHiddenEntry', 'Comment')
