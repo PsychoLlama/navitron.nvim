@@ -32,11 +32,20 @@ vim.cmd.syntax(
   'contains=navitronEntryType'
 )
 
--- File entry
+-- Directory entry
 vim.cmd.syntax(
   'region',
   'navitronDirectoryEntry',
   'start=/^dir:[^.]/',
+  'end=/$/',
+  'contains=navitronEntryType'
+)
+
+-- Symlink entry
+vim.cmd.syntax(
+  'region',
+  'navitronSymlinkEntry',
+  'start=/^link:/',
   'end=/$/',
   'contains=navitronEntryType'
 )
@@ -52,4 +61,5 @@ vim.cmd.syntax(
 
 link('navitronDirectoryEntry', 'Directory')
 link('navitronFileEntry', 'Normal')
+link('navitronSymlinkEntry', 'Structure')
 link('navitronHiddenEntry', 'Comment')

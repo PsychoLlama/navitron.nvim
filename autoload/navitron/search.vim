@@ -21,6 +21,10 @@ endfunc
 func! s:add_metadata(index, path) abort
   let l:ctx = { 'type': getftype(a:path), 'path': a:path }
 
+  if l:ctx.type == 'link'
+    let l:ctx.target = resolve(a:path)
+  endif
+
   return l:ctx
 endfunc
 

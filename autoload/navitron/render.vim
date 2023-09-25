@@ -15,7 +15,13 @@ func! s:set_contents(contents) abort
 endfunc
 
 func! s:describe(index, result) abort
-  return a:result.type . ':' . a:result.pretty_name
+  let l:name = a:result.pretty_name
+
+  if a:result.type == 'link'
+    let l:name = l:name . ' -> ' . a:result.target
+  endif
+
+  return a:result.type . ':' . l:name
 endfunc
 
 func! navitron#render#() abort
