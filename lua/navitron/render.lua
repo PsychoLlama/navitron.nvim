@@ -5,6 +5,9 @@ local function set_contents(contents)
   setlocal('readonly', false)
 
   vim.fn.setline(1, contents)
+  if vim.fn.line('$') > #contents then
+    vim.cmd('silent ' .. #contents + 1 .. ',$ delete')
+  end
 
   setlocal('modifiable', false)
   setlocal('readonly', true)

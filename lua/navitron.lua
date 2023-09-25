@@ -22,7 +22,7 @@ local function initialize_navitron_buffer(path)
     directory = require('navitron.search') { path = normalized_path },
   }
 
-  vim.call('navitron#navigation#init_mappings')
+  require('navitron.navigation').define_mappings()
 end
 
 return {
