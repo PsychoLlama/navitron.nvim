@@ -46,7 +46,7 @@ func! navitron#navigation#create_file() abort
 
   " Create the file, rerender, then set focus on the new file.
   call writefile([], l:absolute_path)
-  call navitron#render#()
+  lua require('navitron.render').render()
   call s:utils.focus_cursor_over_path(l:absolute_path)
 
   return v:true
@@ -67,7 +67,7 @@ func! navitron#navigation#create_directory() abort
   endif
 
   call mkdir(l:absolute_path)
-  call navitron#render#()
+  lua require('navitron.render').render()
   call s:utils.focus_cursor_over_path(l:absolute_path)
 
   return v:true
@@ -93,7 +93,7 @@ func! navitron#navigation#delete_file_or_directory() abort
   " This seems perfectly safe...
   call delete(l:entry.path, 'rf')
   lua require('navitron/cursor').save_position()
-  call navitron#render#()
+  lua require('navitron.render').render()
 endfunc
 
 func! s:move_entry(entry, path) abort
@@ -103,7 +103,7 @@ func! s:move_entry(entry, path) abort
   let l:success = rename(a:entry.path, a:path)
   let a:entry.path = a:path
 
-  call navitron#render#()
+  lua require('navitron.render').render()
   call s:utils.focus_cursor_over_path(a:path)
 endfunc
 

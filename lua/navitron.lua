@@ -1,6 +1,4 @@
-local function setlocal(option, value)
-  vim.api.nvim_set_option_value(option, value, { scope = 'local' })
-end
+local setlocal = require('navitron.utils').setlocal
 
 local function initialize_navitron_buffer(path)
   setlocal('autoread', true)
@@ -46,6 +44,6 @@ return {
       initialize_navitron_buffer(directory_path)
     end
 
-    vim.call('navitron#render#')
+    require('navitron.render').render()
   end,
 }

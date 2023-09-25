@@ -12,4 +12,10 @@ return {
       end
     end
   end,
+
+  setlocal = function(option, value)
+    vim.api.nvim_set_option_value(option, value, {
+      scope = 'local',
+    })
+  end,
 }
