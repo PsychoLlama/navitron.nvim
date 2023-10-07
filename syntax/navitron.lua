@@ -23,32 +23,9 @@ vim.cmd.syntax(
   'contained'
 )
 
--- File entry
-vim.cmd.syntax(
-  'region',
-  'navitronFileEntry',
-  'start=/^file:[^.]/',
-  'end=/$/',
-  'contains=navitronEntryType'
-)
-
--- Directory entry
-vim.cmd.syntax(
-  'region',
-  'navitronDirectoryEntry',
-  'start=/^dir:[^.]/',
-  'end=/$/',
-  'contains=navitronEntryType'
-)
-
--- Symlink entry
-vim.cmd.syntax(
-  'region',
-  'navitronSymlinkEntry',
-  'start=/^link:/',
-  'end=/$/',
-  'contains=navitronEntryType'
-)
+create_region('navitronFileEntry', 'file')
+create_region('navitronDirectoryEntry', 'dir')
+create_region('navitronSymlinkEntry', 'link')
 
 -- Hidden file/directory entry
 vim.cmd.syntax(
