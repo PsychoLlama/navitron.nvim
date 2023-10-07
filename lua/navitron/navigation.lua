@@ -35,7 +35,10 @@ local function explore_listing_under_cursor()
   if vim.fn.isdirectory(directory.path) == 1 then
     navitron.open(directory.path)
   else
-    vim.cmd.edit(directory.path)
+    pcall(function()
+      -- Raises an error if the file is open in another instance of neovim.
+      vim.cmd.edit(vim.fn.fnameescape(directory.path))
+    end)
   end
 end
 
