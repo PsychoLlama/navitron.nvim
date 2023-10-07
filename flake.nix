@@ -32,13 +32,11 @@
               config = {
                 presets.base.enable = true;
                 plugins.navitron-nvim.enable = false;
-                extraPlugins = [
-                  (pkgs.vimUtils.buildVimPluginFrom2Nix {
-                    pname = "navitron-nvim";
-                    version = self.rev or "latest";
-                    src = self;
-                  })
-                ];
+
+                extraConfig = lib.mkBefore ''
+                  " Add the repo root as a plugin.
+                  exe 'set rtp^=' . systemlist('git rev-parse --show-toplevel')[0]
+                '';
               };
             })
           ];
