@@ -2,10 +2,6 @@ local function link(group, target)
   vim.cmd.highlight('default', 'link', group, target)
 end
 
-local function hi(group, ...)
-  vim.cmd.highlight(group, ...)
-end
-
 -- Matches: `{entry_type}:my-file.txt`
 local function create_region(group_name, marker, exclude_hidden_files)
   local hidden_pattern = ''
