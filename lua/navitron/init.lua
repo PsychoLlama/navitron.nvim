@@ -35,7 +35,10 @@ return {
     -- `open(...)` can be called from existing buffers. Make sure we're
     -- operating in a new buffer, rather than overwriting an old.
     if vim.fn.expand('%:p') ~= directory_path then
-      vim.cmd('edit ' .. directory_path)
+      vim.api.nvim_cmd({
+        cmd = 'edit',
+        args = { directory_path },
+      }, {})
     end
 
     if vim.b.navitron == nil then
