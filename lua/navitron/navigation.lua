@@ -1,7 +1,7 @@
-local utils = require('navitron.utils')
 local cursor = require('navitron.cursor')
 local fuzzy = require('navitron.fuzzy')
 local navitron = require('navitron')
+local utils = require('navitron.utils')
 
 local function get_file_or_directory_under_cursor()
   local index = vim.fn.line('.')
@@ -169,7 +169,9 @@ local function define_mappings()
   state.has_defined_mappings = true
   vim.b.navitron = state
 
-  keymap({ 'h', '-' }, function() go_up(1) end)
+  keymap({ 'h', '-' }, function()
+    go_up(1)
+  end)
   keymap({ 'l', '<cr>' }, explore_listing_under_cursor)
   keymap({ '%', 'i' }, create_file)
   keymap('a', create_directory)

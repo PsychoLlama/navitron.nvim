@@ -19,7 +19,7 @@ local function initialize_navitron_buffer(path)
 
   vim.b.navitron = {
     path = normalized_path,
-    directory = require('navitron.search') { path = normalized_path },
+    directory = require('navitron.search')({ path = normalized_path }),
   }
 
   require('navitron.navigation').define_mappings()
@@ -48,7 +48,9 @@ return {
     require('navitron.render').render()
 
     if vim.g.navitron.previous_buffer ~= nil then
-      require('navitron.utils').focus_cursor_over_path(vim.g.navitron.previous_buffer)
+      require('navitron.utils').focus_cursor_over_path(
+        vim.g.navitron.previous_buffer
+      )
     end
   end,
 

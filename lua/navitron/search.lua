@@ -42,7 +42,8 @@ local function order(item1, item2)
 
   -- Sort by entry type
   if item1.type ~= item2.type then
-    return vim.fn.index(ordering, item1.type) - vim.fn.index(ordering, item2.type)
+    return vim.fn.index(ordering, item1.type)
+      - vim.fn.index(ordering, item2.type)
   end
 
   -- Sort by name
@@ -58,18 +59,9 @@ local function should_show_entry(_, entry)
 end
 
 return function(options)
-  local entries = vim.fn.map(
-    read_directory(options.path),
-    to_entry
-  )
+  local entries = vim.fn.map(read_directory(options.path), to_entry)
 
   return vim.fn.uniq(
-    vim.fn.sort(
-      vim.fn.filter(
-        entries,
-        should_show_entry
-      ),
-      order
-    )
+    vim.fn.sort(vim.fn.filter(entries, should_show_entry), order)
   )
 end

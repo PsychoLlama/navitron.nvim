@@ -1,4 +1,4 @@
-local hooks_group = vim.api.nvim_create_augroup('navitron_hooks', {});
+local hooks_group = vim.api.nvim_create_augroup('navitron_hooks', {})
 
 -- Take over control of new buffers if they are directories.
 vim.api.nvim_create_autocmd({ 'BufEnter' }, {
@@ -27,9 +27,10 @@ vim.api.nvim_create_autocmd({ 'BufLeave' }, {
   pattern = { '*' },
   callback = function()
     -- Remove trailing slashes on directories.
-    local current_path = vim.fn.substitute(vim.fn.expand('%:p'), '\\v/$', '', '')
+    local current_path =
+      vim.fn.substitute(vim.fn.expand('%:p'), '\\v/$', '', '')
     vim.g.navitron = vim.tbl_extend('force', vim.g.navitron, {
-      previous_buffer = current_path
+      previous_buffer = current_path,
     })
   end,
 })
