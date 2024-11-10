@@ -19,7 +19,7 @@ Now every directory will be loaded with navitron.
 - Buffer-oriented file browsing, like netrw.
 - Vim-inspired keybindings for file management (`dd` deletes a file or directory, `hjkl` navigates,
   `r` renames).
-- Integrates with [skim](https://github.com/lotabout/skim) and [fzf](https://github.com/junegunn/fzf) (`f`/`t`) for fuzzy finding.
+- Integrates with [fzf](https://github.com/junegunn/fzf) (`f`/`t`) for fuzzy finding.
 
 ## Future
 

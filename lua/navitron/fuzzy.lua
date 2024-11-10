@@ -19,10 +19,6 @@ local function search(cmd, callback)
     sink = callback,
   }
 
-  if vim.fn.exists('*skim#run') == 1 then
-    return vim.call('skim#run', options)
-  end
-
   if vim.fn.exists('*fzf#run') == 1 then
     return vim.call('fzf#run', options)
   end
@@ -30,7 +26,7 @@ local function search(cmd, callback)
   vim.cmd.echohl('Error')
   vim.cmd.echon('"Error:"')
   vim.cmd.echohl('Clear')
-  vim.cmd.echon('" No fuzzy finder found (fzf/skim)"')
+  vim.cmd.echon('" Cannot fuzzy find, fzf is not installed."')
 end
 
 return {
