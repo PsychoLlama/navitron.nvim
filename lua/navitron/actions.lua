@@ -3,7 +3,10 @@ local fuzzy = require('navitron.fuzzy')
 local navitron = require('navitron')
 local utils = require('navitron.utils')
 
-local M = {}
+local M = {
+  find_file = fuzzy.find_file,
+  find_directory = fuzzy.find_dir,
+}
 
 local function get_file_or_directory_under_cursor()
   local index = vim.fn.line('.')
@@ -23,6 +26,10 @@ function M.go_up(dir_count)
 
   navitron.open(target_dir)
   utils.focus_cursor_over_path(prev_dir_path)
+end
+
+function M.open_parent_dir()
+  M.go_up(1)
 end
 
 function M.explore_listing_under_cursor()
@@ -147,6 +154,11 @@ function M.move_file_or_directory_absolute()
   end
 end
 
+--- Map one or more keys to a callback.
+--- TODO: Support keymap descriptions.
+---
+--- @param keys string|string[]
+--- @param handler function
 local function keymap(keys, handler)
   if type(keys) == 'string' then
     keys = { keys }
@@ -162,6 +174,7 @@ local function keymap(keys, handler)
 end
 
 function M.init_keymaps()
+  local config = require('navitron.config').get()
   local state = vim.b.navitron
 
   if state.has_defined_mappings then
@@ -171,19 +184,11 @@ function M.init_keymaps()
   state.has_defined_mappings = true
   vim.b.navitron = state
 
-  keymap({ 'h', '-' }, function()
-    M.go_up(1)
-  end)
-  keymap({ 'l', '<cr>' }, M.explore_listing_under_cursor)
-  keymap({ '%', 'i' }, M.create_file)
-  keymap('a', M.create_directory)
-  keymap('dd', M.delete_file_or_directory)
-  keymap('I', M.create_and_edit_file)
-  keymap('A', M.create_and_explore_directory)
-  keymap('r', M.move_file_or_directory_relative)
-  keymap('R', M.move_file_or_directory_absolute)
-  keymap('f', fuzzy.find_file)
-  keymap('t', fuzzy.find_dir)
+  -- Define keymaps. Both keymaps and handlers can be overridden independently
+  -- through `setup(...)`.
+  for id, binding in pairs(config.keymaps) do
+    keymap(binding, config.actions[id])
+  end
 end
 
 return M

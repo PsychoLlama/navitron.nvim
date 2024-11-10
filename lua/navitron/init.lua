@@ -54,7 +54,8 @@ return {
     end
   end,
 
-  setup = function()
+  --- @param config? navitron.Config
+  setup = function(config)
     -- Officially recommended way to disable netrw.
     -- See `:help netrw-noload`
     vim.g.loaded_netrw = true
@@ -65,5 +66,7 @@ return {
       cursor_positions = {},
       previous_buffer = nil,
     }
+
+    require('navitron.config').set(config or {})
   end,
 }
