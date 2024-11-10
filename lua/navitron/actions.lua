@@ -1,12 +1,37 @@
 local cursor = require('navitron.cursor')
-local fuzzy = require('navitron.fuzzy')
 local navitron = require('navitron')
 local utils = require('navitron.utils')
 
-local M = {
-  find_file = fuzzy.find_file,
-  find_directory = fuzzy.find_dir,
-}
+local M = {}
+
+local function get_downward_search_pattern(type)
+  if vim.fn.executable('fd') == 1 then
+    return 'fd -t ' .. type
+  end
+
+  if vim.fn.executable('find') == 1 then
+    return 'find . -type ' .. type
+  end
+
+  error("Can't find a search program (e.g. 'find').")
+end
+
+local function search(cmd, callback)
+  local options = {
+    dir = vim.b.navitron.path,
+    source = cmd,
+    sink = callback,
+  }
+
+  if vim.fn.exists('*fzf#run') == 1 then
+    return vim.call('fzf#run', options)
+  end
+
+  vim.cmd.echohl('Error')
+  vim.cmd.echon('"Error:"')
+  vim.cmd.echohl('Clear')
+  vim.cmd.echon('" Cannot fuzzy find, fzf is not installed."')
+end
 
 local function get_file_or_directory_under_cursor()
   local index = vim.fn.line('.')
@@ -173,6 +198,24 @@ function M.move()
   if string.len(new_path) ~= 0 then
     move_entry(entry, new_path)
   end
+end
+
+--- Fuzzy search for files (excludes directories).
+function M.find_file()
+  local cmd = get_downward_search_pattern('f')
+
+  search(cmd, function(file)
+    vim.cmd.edit(vim.fn.fnameescape(file))
+  end)
+end
+
+--- Fuzzy search for directories.
+function M.find_directory()
+  local cmd = get_downward_search_pattern('d')
+
+  search(cmd, function(directory)
+    navitron.open(vim.fn.fnameescape(directory))
+  end)
 end
 
 return M
