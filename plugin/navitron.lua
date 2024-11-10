@@ -1,7 +1,6 @@
 -- Take over control of new buffers if they are directories.
 vim.api.nvim_create_autocmd({ 'BufEnter' }, {
   group = vim.api.nvim_create_augroup('navitron.explorer', {}),
-  pattern = { '*' },
   callback = function()
     if vim.g.navitron == nil then
       return
@@ -22,7 +21,6 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
 -- Remember the last open file so we can auto-focus it.
 vim.api.nvim_create_autocmd({ 'BufLeave' }, {
   group = vim.api.nvim_create_augroup('navitron.autofocus', {}),
-  pattern = { '*' },
   callback = function()
     -- Remove trailing slashes on directories.
     local current_path =
