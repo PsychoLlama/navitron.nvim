@@ -175,41 +175,4 @@ function M.move()
   end
 end
 
---- Map one or more keys to a callback.
---- TODO: Support keymap descriptions.
----
---- @param keys string|string[]
---- @param handler function
-local function keymap(keys, handler)
-  if type(keys) == 'string' then
-    keys = { keys }
-  end
-
-  for _, key in ipairs(keys) do
-    vim.api.nvim_buf_set_keymap(0, 'n', key, '', {
-      callback = handler,
-      noremap = true,
-      silent = true,
-    })
-  end
-end
-
-function M.init_keymaps()
-  local config = require('navitron.config').get()
-  local state = vim.b.navitron
-
-  if state.has_defined_mappings then
-    return
-  end
-
-  state.has_defined_mappings = true
-  vim.b.navitron = state
-
-  -- Define keymaps. Both keymaps and handlers can be overridden independently
-  -- through `setup(...)`.
-  for id, binding in pairs(config.keymaps) do
-    keymap(binding, config.actions[id])
-  end
-end
-
 return M

@@ -22,7 +22,7 @@ local function initialize_navitron_buffer(path)
     directory = require('navitron.search')({ path = normalized_path }),
   }
 
-  require('navitron.actions').init_keymaps()
+  require('navitron.keymap').init()
 end
 
 return {
