@@ -3,12 +3,14 @@ local fuzzy = require('navitron.fuzzy')
 local navitron = require('navitron')
 local utils = require('navitron.utils')
 
+local M = {}
+
 local function get_file_or_directory_under_cursor()
   local index = vim.fn.line('.')
   return vim.b.navitron.directory[index]
 end
 
-local function go_up(dir_count)
+function M.go_up(dir_count)
   cursor.save_position()
 
   local prev_dir_path = vim.b.navitron.path
@@ -23,7 +25,7 @@ local function go_up(dir_count)
   utils.focus_cursor_over_path(prev_dir_path)
 end
 
-local function explore_listing_under_cursor()
+function M.explore_listing_under_cursor()
   local directory = get_file_or_directory_under_cursor()
 
   if directory == nil then
@@ -42,7 +44,7 @@ local function explore_listing_under_cursor()
   end
 end
 
-local function create_file()
+function M.create_file()
   local file = vim.fn.input('New file: ')
   local absolute_path = vim.b.navitron.path .. '/' .. file
 
@@ -57,13 +59,13 @@ local function create_file()
   return true
 end
 
-local function create_and_edit_file()
-  if create_file() then
-    explore_listing_under_cursor()
+function M.create_and_edit_file()
+  if M.create_file() then
+    M.explore_listing_under_cursor()
   end
 end
 
-local function create_directory()
+function M.create_directory()
   local directory = vim.fn.input('New directory: ')
   local absolute_path = vim.b.navitron.path .. '/' .. directory
 
@@ -78,13 +80,13 @@ local function create_directory()
   return true
 end
 
-local function create_and_explore_directory()
-  if create_directory() then
-    explore_listing_under_cursor()
+function M.create_and_explore_directory()
+  if M.create_directory() then
+    M.explore_listing_under_cursor()
   end
 end
 
-local function delete_file_or_directory()
+function M.delete_file_or_directory()
   local entry = get_file_or_directory_under_cursor()
 
   if entry == nil then
@@ -112,7 +114,7 @@ local function move_entry(entry, path)
   utils.focus_cursor_over_path(path)
 end
 
-local function move_file_or_directory_relative()
+function M.move_file_or_directory_relative()
   local entry = get_file_or_directory_under_cursor()
 
   if entry == nil then
@@ -127,7 +129,7 @@ local function move_file_or_directory_relative()
   end
 end
 
-local function move_file_or_directory_absolute()
+function M.move_file_or_directory_absolute()
   local entry = get_file_or_directory_under_cursor()
 
   if entry == nil then
@@ -159,7 +161,7 @@ local function keymap(keys, handler)
   end
 end
 
-local function define_mappings()
+function M.init_keymaps()
   local state = vim.b.navitron
 
   if state.has_defined_mappings then
@@ -170,29 +172,18 @@ local function define_mappings()
   vim.b.navitron = state
 
   keymap({ 'h', '-' }, function()
-    go_up(1)
+    M.go_up(1)
   end)
-  keymap({ 'l', '<cr>' }, explore_listing_under_cursor)
-  keymap({ '%', 'i' }, create_file)
-  keymap('a', create_directory)
-  keymap('dd', delete_file_or_directory)
-  keymap('I', create_and_edit_file)
-  keymap('A', create_and_explore_directory)
-  keymap('r', move_file_or_directory_relative)
-  keymap('R', move_file_or_directory_absolute)
+  keymap({ 'l', '<cr>' }, M.explore_listing_under_cursor)
+  keymap({ '%', 'i' }, M.create_file)
+  keymap('a', M.create_directory)
+  keymap('dd', M.delete_file_or_directory)
+  keymap('I', M.create_and_edit_file)
+  keymap('A', M.create_and_explore_directory)
+  keymap('r', M.move_file_or_directory_relative)
+  keymap('R', M.move_file_or_directory_absolute)
   keymap('f', fuzzy.find_file)
   keymap('t', fuzzy.find_dir)
 end
 
-return {
-  create_and_edit_file = create_and_edit_file,
-  create_and_explore_directory = create_and_explore_directory,
-  create_directory = create_directory,
-  create_file = create_file,
-  define_mappings = define_mappings,
-  delete_file_or_directory = delete_file_or_directory,
-  explore_listing_under_cursor = explore_listing_under_cursor,
-  go_up = go_up,
-  move_file_or_directory_absolute = move_file_or_directory_absolute,
-  move_file_or_directory_relative = move_file_or_directory_relative,
-}
+return M
