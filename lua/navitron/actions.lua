@@ -53,6 +53,18 @@ function M.open()
   end
 end
 
+--- Open the home directory.
+function M.open_home()
+  local homedir = vim.uv.os_homedir()
+
+  if not homedir then
+    vim.notify("Couldn't resolve home directory.", vim.log.levels.WARN)
+    return
+  end
+
+  navitron.open(homedir)
+end
+
 --- Create a new file, but don't open it yet.
 function M.new_file()
   local file = vim.fn.input('New file: ')

@@ -10,6 +10,7 @@ local M = {}
 local defaults = {
   actions = {
     [actions.open_parent] = actions.open_parent,
+    [actions.open_home] = actions.open_home,
     [actions.open] = actions.open,
     [actions.new_file] = actions.new_file,
     [actions.new_directory] = actions.new_directory,
@@ -24,6 +25,7 @@ local defaults = {
 
   keymaps = {
     [actions.open_parent] = { 'h', '-' },
+    [actions.open_home] = '~',
     [actions.open] = { 'l', '<cr>' },
     [actions.new_file] = { '%', 'i' },
     [actions.new_directory] = 'a',
