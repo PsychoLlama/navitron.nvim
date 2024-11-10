@@ -28,11 +28,13 @@ function M.go_up(dir_count)
   utils.focus_cursor_over_path(prev_dir_path)
 end
 
-function M.open_parent_dir()
+--- Open the parent directory.
+function M.open_parent()
   M.go_up(1)
 end
 
-function M.explore_listing_under_cursor()
+--- Open the Navitron entry under the cursor.
+function M.open()
   local directory = get_file_or_directory_under_cursor()
 
   if directory == nil then
@@ -51,7 +53,8 @@ function M.explore_listing_under_cursor()
   end
 end
 
-function M.create_file()
+--- Create a new file, but don't open it yet.
+function M.new_file()
   local file = vim.fn.input('New file: ')
   local absolute_path = vim.b.navitron.path .. '/' .. file
 
@@ -66,13 +69,15 @@ function M.create_file()
   return true
 end
 
-function M.create_and_edit_file()
-  if M.create_file() then
-    M.explore_listing_under_cursor()
+--- Create a new file and open it immediately.
+function M.open_new_file()
+  if M.new_file() then
+    M.open()
   end
 end
 
-function M.create_directory()
+--- Create a new directory, but don't open it yet.
+function M.new_directory()
   local directory = vim.fn.input('New directory: ')
   local absolute_path = vim.b.navitron.path .. '/' .. directory
 
@@ -87,13 +92,15 @@ function M.create_directory()
   return true
 end
 
-function M.create_and_explore_directory()
-  if M.create_directory() then
-    M.explore_listing_under_cursor()
+--- Create a new directory and open it immediately.
+function M.open_new_directory()
+  if M.new_directory() then
+    M.open()
   end
 end
 
-function M.delete_file_or_directory()
+-- Recursively delete the file or directory under the cursor.
+function M.delete()
   local entry = get_file_or_directory_under_cursor()
 
   if entry == nil then
@@ -121,7 +128,8 @@ local function move_entry(entry, path)
   utils.focus_cursor_over_path(path)
 end
 
-function M.move_file_or_directory_relative()
+--- Rename the entry under the cursor.
+function M.rename()
   local entry = get_file_or_directory_under_cursor()
 
   if entry == nil then
@@ -136,7 +144,8 @@ function M.move_file_or_directory_relative()
   end
 end
 
-function M.move_file_or_directory_absolute()
+--- Move the entry under the cursor to a new location.
+function M.move()
   local entry = get_file_or_directory_under_cursor()
 
   if entry == nil then
