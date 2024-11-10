@@ -1,6 +1,10 @@
-local setlocal = require('navitron.utils').setlocal
+local M = {}
 
+--- Replace the current buffer's contents.
+--- @param contents string[]
 local function set_contents(contents)
+  local setlocal = require('navitron.utils').setlocal
+
   setlocal('modifiable', true)
   setlocal('readonly', false)
 
@@ -13,6 +17,7 @@ local function set_contents(contents)
   setlocal('readonly', true)
 end
 
+--- Format an entry for human eyes.
 local function describe(_, result)
   local name = result.pretty_name
 
@@ -23,13 +28,14 @@ local function describe(_, result)
   return result.type .. ':' .. name
 end
 
-return {
-  render = function()
-    local state = vim.b.navitron
-    state.directory = require('navitron.search')({ path = state.path })
-    vim.b.navitron = state
+--- Refresh the current directory and draw it on the buffer.
+function M.render()
+  local state = vim.b.navitron
+  state.directory = require('navitron.search')(state.path)
+  vim.b.navitron = state
 
-    local contents = vim.fn.map(vim.fn.copy(state.directory), describe)
-    set_contents(contents)
-  end,
-}
+  local contents = vim.fn.map(vim.fn.copy(state.directory), describe)
+  set_contents(contents)
+end
+
+return M

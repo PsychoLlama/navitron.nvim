@@ -58,8 +58,10 @@ local function should_show_entry(_, entry)
   return IGNORED_LISTINGS[entry.name] == nil
 end
 
-return function(options)
-  local entries = vim.fn.map(read_directory(options.path), to_entry)
+--- Enumerate a directory and return a list of results.
+--- @param directory string
+return function(directory)
+  local entries = vim.fn.map(read_directory(directory), to_entry)
 
   return vim.fn.uniq(
     vim.fn.sort(vim.fn.filter(entries, should_show_entry), order)
