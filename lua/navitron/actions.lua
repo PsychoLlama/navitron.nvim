@@ -202,14 +202,13 @@ end
 
 --- Fuzzy search for files (excludes directories).
 function M.find_file()
-  local cmd = get_downward_search_pattern('f')
-
-  search(cmd, function(file)
-    vim.cmd.edit(vim.fn.fnameescape(file))
-  end)
+  require('telescope.builtin').find_files({
+    cwd = vim.b.navitron.path,
+  })
 end
 
 --- Fuzzy search for directories.
+--- TODO: Make this use Telescope. Possibly as an extension.
 function M.find_directory()
   local cmd = get_downward_search_pattern('d')
 
