@@ -4,35 +4,6 @@ local utils = require('navitron.utils')
 
 local M = {}
 
-local function get_downward_search_pattern(type)
-  if vim.fn.executable('fd') == 1 then
-    return 'fd -t ' .. type
-  end
-
-  if vim.fn.executable('find') == 1 then
-    return 'find . -type ' .. type
-  end
-
-  error("Can't find a search program (e.g. 'find').")
-end
-
-local function search(cmd, callback)
-  local options = {
-    dir = vim.b.navitron.path,
-    source = cmd,
-    sink = callback,
-  }
-
-  if vim.fn.exists('*fzf#run') == 1 then
-    return vim.call('fzf#run', options)
-  end
-
-  vim.cmd.echohl('Error')
-  vim.cmd.echon('"Error:"')
-  vim.cmd.echohl('Clear')
-  vim.cmd.echon('" Cannot fuzzy find, fzf is not installed."')
-end
-
 local function get_file_or_directory_under_cursor()
   local index = vim.fn.line('.')
   return vim.b.navitron.directory[index]
@@ -208,13 +179,10 @@ function M.find_file()
 end
 
 --- Fuzzy search for directories.
---- TODO: Make this use Telescope. Possibly as an extension.
 function M.find_directory()
-  local cmd = get_downward_search_pattern('d')
-
-  search(cmd, function(directory)
-    navitron.open(vim.fn.fnameescape(directory))
-  end)
+  require('navitron.pickers').find_directory({
+    cwd = vim.b.navitron.path,
+  })
 end
 
 return M
