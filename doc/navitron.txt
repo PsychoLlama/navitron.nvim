@@ -1,0 +1,79 @@
+*navitron* a modern take on netrw
+
+Author:   Jesse Gibson <JesseTheGibson@gmail.com>
+Homepage: https://github.com/PsychoLlama/navitron.nvim
+License:  MIT
+
+  Press `gO` to show the table of contents.
+
+==============================================================================
+OVERVIEW                                                     *navitron-overview*
+
+Navitron is a file browser. It replaces netrw, the built-in file explorer.
+Primary features are fuzzy finding navigation, richer options and keybindings
+for directory management, and faster loading.
+
+I built this file browser for my own needs. I'm gonna break stuff and overfit
+it to my own workflow.
+
+==============================================================================
+SETUP                                                           *navitron-setup*
+
+Nothing happens unless you call the setup function. This MUST happen in your
+vimrc before all plugins load, otherwise netrw thinks its invited and takes
+over your buffers. Fight back, call `setup()`.
+>
+  require('navitron').setup()
+
+All arguments are optional.
+
+------------------------------------------------------------------------------
+CONFIG                                                         *navitron-config*
+
+There are several actions built in:
+
+- open_parent: Go up one directory.
+- open_home: Open the user's home directory.
+- open: Open the file or directory under the cursor.
+- new_file: Create a new file.
+- new_directory: Create a new directory.
+- delete: Delete the file or directory under the cursor.
+- open_new_file: Create a new file and open it.
+- open_new_directory: Create a new directory and open it.
+- rename: Rename the file or directory under the cursor (only filename) 
+- move: Move the file or directory under the cursor (absolute path).
+- find_file: Find a file under the current directory.
+- find_directory: Find a directory under the current directory.
+
+Import them as `require('navitron.actions')`. Call them from any navitron
+buffer.
+
+Default behaviors can be overridden:
+>
+  require('navitron').setup({
+    actions = {
+      [actions.new_file] = function()
+        print('Creating a new file...')
+        actions.new_file()
+      end,
+    },
+  })
+
+Actions have keymaps. The defaults can be changed using a similar pattern:
+>
+  require('navitron').setup({
+    keymaps = {
+      [actions.new_file] = { '%' },
+    },
+  })
+
+(No stability guarantees.)
+
+==============================================================================
+CHANGELOG                                                   *navitron-changelog*
+
+0.1.0~
+
+First tagged release (unstable).
+
+vim: ft=help tw=78:
