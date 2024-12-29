@@ -144,12 +144,17 @@ function M.rename()
     return
   end
 
-  local target_name = vim.fn.input({ prompt = 'Rename: ' })
-  local new_path = vim.fn.fnamemodify(entry.path, ':h') .. '/' .. target_name
+  vim.ui.input({ prompt = 'Rename' }, function(target_name)
+    if not target_name then
+      return
+    end
 
-  if string.len(target_name) ~= 0 then
+    local new_path = vim.fn.fnamemodify(entry.path, ':h')
+      .. '/'
+      .. target_name
+
     move_entry(entry, new_path)
-  end
+  end)
 end
 
 --- Move the entry under the cursor to a new location.
@@ -160,15 +165,15 @@ function M.move()
     return
   end
 
-  local new_path = vim.fn.input({
-    prompt = 'Move: ',
+  vim.ui.input({
+    prompt = 'Move',
     default = entry.path,
     completion = 'file',
-  })
-
-  if string.len(new_path) ~= 0 then
-    move_entry(entry, new_path)
-  end
+  }, function(new_path)
+    if new_path then
+      move_entry(entry, new_path)
+    end
+  end)
 end
 
 --- Fuzzy search for files (excludes directories).

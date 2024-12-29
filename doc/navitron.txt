@@ -72,8 +72,15 @@ Actions have keymaps. The defaults can be changed using a similar pattern:
 ==============================================================================
 CHANGELOG                                                   *navitron-changelog*
 
-0.1.0~
+0.1.0
 
 First tagged release (unstable).
+
+0.2.0
+
+Changed:
+
+- Now rename actions use `vim.ui.input` for names. This plays better with
+  other plugins like Noice, Dressing, and Copilot.
 
 vim: ft=help tw=78:
