@@ -61,50 +61,72 @@ function M.open_home()
   navitron.open(homedir)
 end
 
---- Create a new file, but don't open it yet.
-function M.new_file()
-  local file = vim.fn.input('New file: ')
-  local absolute_path = vim.b.navitron.path .. '/' .. file
-
-  if file == '' then
-    return false
-  end
+local function create_file(name, callback)
+  local absolute_path = vim.b.navitron.path .. '/' .. name
 
   vim.fn.writefile({}, absolute_path)
   require('navitron.render').render()
   utils.focus_cursor_over_path(absolute_path)
 
-  return true
-end
-
---- Create a new file and open it immediately.
-function M.open_new_file()
-  if M.new_file() then
-    M.open()
+  if callback then
+    callback()
   end
 end
 
---- Create a new directory, but don't open it yet.
-function M.new_directory()
-  local directory = vim.fn.input('New directory: ')
-  local absolute_path = vim.b.navitron.path .. '/' .. directory
-
-  if string.len(directory) == 0 then
-    return false
-  end
+local function create_directory(name, callback)
+  local absolute_path = vim.b.navitron.path .. '/' .. name
 
   vim.fn.mkdir(absolute_path)
   require('navitron.render').render()
   utils.focus_cursor_over_path(absolute_path)
 
-  return true
+  if callback then
+    callback()
+  end
+end
+
+--- Create a new file, but don't open it yet.
+function M.new_file()
+  vim.ui.input({ prompt = 'New file' }, function(file)
+    if not file or file == '' then
+      return
+    end
+
+    create_file(file)
+  end)
+end
+
+--- Create a new file and open it immediately.
+function M.open_new_file()
+  vim.ui.input({ prompt = 'New file' }, function(file)
+    if not file or file == '' then
+      return
+    end
+
+    create_file(file, M.open)
+  end)
+end
+
+--- Create a new directory, but don't open it yet.
+function M.new_directory()
+  vim.ui.input({ prompt = 'New directory' }, function(directory)
+    if not directory or directory == '' then
+      return
+    end
+
+    create_directory(directory)
+  end)
 end
 
 --- Create a new directory and open it immediately.
 function M.open_new_directory()
-  if M.new_directory() then
-    M.open()
-  end
+  vim.ui.input({ prompt = 'New directory' }, function(directory)
+    if not directory or directory == '' then
+      return
+    end
+
+    create_directory(directory, M.open)
+  end)
 end
 
 -- Recursively delete the file or directory under the cursor.
