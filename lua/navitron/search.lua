@@ -58,12 +58,21 @@ local function should_show_entry(_, entry)
   return IGNORED_LISTINGS[entry.name] == nil
 end
 
+--- A single filesystem entry within a directory listing.
+--- @class navitron.Entry
+--- @field type string The `getftype` of the entry (e.g. 'dir', 'file', 'link').
+--- @field path string Absolute path to the entry.
+--- @field name string The entry's basename.
+--- @field pretty_name string The basename, decorated for display.
+--- @field target? string For links, the resolved target path.
+
 --- Enumerate a directory and return a list of results.
 --- @param directory string
+--- @return navitron.Entry[]
 return function(directory)
   local entries = vim.fn.map(read_directory(directory), to_entry)
 
   return vim.fn.uniq(
     vim.fn.sort(vim.fn.filter(entries, should_show_entry), order)
-  )
+  ) --[[@as navitron.Entry[] ]]
 end
