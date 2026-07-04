@@ -23,7 +23,8 @@
 
     {
       devShells = eachSystem (
-        system: pkgs: {
+        system: pkgs: rec {
+          # For developing locally. Uses the system neovim.
           default = pkgs.mkShell {
             packages = [
               pkgs.just
@@ -34,6 +35,12 @@
               pkgs.stylua
               pkgs.treefmt
             ];
+          };
+
+          # For CI. Uses an unconfigured neovim package.
+          ci = pkgs.mkShell {
+            inputsFrom = [ default ];
+            packages = [ pkgs.neovim ];
           };
         }
       );
