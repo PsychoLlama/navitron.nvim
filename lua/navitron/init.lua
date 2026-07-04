@@ -1,5 +1,15 @@
 local M = {}
 
+--- Buffer-local state for a Navitron buffer (`vim.b.navitron`).
+--- @class navitron.State
+--- @field path string The directory the buffer is displaying.
+--- @field directory navitron.Entry[] The entries within that directory.
+
+--- Plugin-global state (`vim.g.navitron`).
+--- @class navitron.GlobalState
+--- @field cursor_positions table<string, integer> Last cursor line, keyed by path.
+--- @field previous_buffer? string Path of the last-focused buffer, if any.
+
 local function initialize_navitron_buffer(path)
   local setlocal = require('navitron.utils').setlocal
 
@@ -19,6 +29,7 @@ local function initialize_navitron_buffer(path)
   -- Remove trailing slashes to simplify downstream scripts.
   local normalized_path = path:gsub('/$', '')
 
+  --- @type navitron.State
   vim.b.navitron = {
     path = normalized_path,
     directory = require('navitron.search')(normalized_path),
@@ -35,6 +46,7 @@ function M.setup(config)
   vim.g.loaded_netrwPlugin = true
 
   -- Initialize global state.
+  --- @type navitron.GlobalState
   vim.g.navitron = {
     cursor_positions = {},
     previous_buffer = nil,
