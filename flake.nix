@@ -22,6 +22,23 @@
     in
 
     {
+      packages = eachSystem (
+        system: pkgs: rec {
+          default = navitron-nvim;
+
+          navitron-nvim = pkgs.vimUtils.buildVimPlugin {
+            pname = "navitron.nvim";
+            version = self.shortRev or "latest";
+            src = lib.fileset.toSource {
+              root = ./.;
+              fileset = lib.fileset.difference ./. (
+                lib.fileset.fileFilter (file: lib.hasSuffix "_spec.lua" file.name) ./.
+              );
+            };
+          };
+        }
+      );
+
       devShells = eachSystem (
         system: pkgs: rec {
           # For developing locally. Uses the system neovim.
