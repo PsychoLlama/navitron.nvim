@@ -13,6 +13,6 @@
 - Run `just check` first. Abort if it fails.
 - Move `[Unreleased]` changelog entries to a new version section with date.
 - Update comparison links at the bottom of `CHANGELOG.md`.
-- Create annotated tag with `bin/tag-version 0.X.Y` (tags have no `v` prefix).
+- Create annotated tag: `git tag -a 0.X.Y -m "0.X.Y"` (tags have no `v` prefix).
 - Push with tags: `git push --follow-tags`
 - Create GitHub release: `gh release create 0.X.Y --title "v0.X.Y" --notes "<changelog content>"`
