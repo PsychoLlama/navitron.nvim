@@ -143,8 +143,11 @@ function M.delete()
 
   vim.fn.delete(entry.path, 'rf') -- YOLO
 
-  cursor.save_position()
+  -- Keep the cursor on the same line so it lands on the next entry, rather
+  -- than letting the shrinking buffer bump it to the bottom.
+  local line = vim.fn.line('.')
   require('navitron.render').render()
+  vim.fn.cursor(math.min(line, vim.fn.line('$')), 1)
 end
 
 local function move_entry(entry, path)
