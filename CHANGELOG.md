@@ -40,6 +40,6 @@ First tagged release (unstable).
 - Statusline updates to reflect the current directory.
 - Configurable actions and keymaps, overridable through `setup`.
 
-[Unreleased]: https://github.com/PsychoLlama/navitron.nvim/compare/0.2.0...HEAD
-[0.2.0]: https://github.com/PsychoLlama/navitron.nvim/compare/0.1.0...0.2.0
-[0.1.0]: https://github.com/PsychoLlama/navitron.nvim/commits/0.1.0
+[Unreleased]: https://github.com/PsychoLlama/navitron.nvim/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/PsychoLlama/navitron.nvim/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/PsychoLlama/navitron.nvim/commits/v0.1.0
