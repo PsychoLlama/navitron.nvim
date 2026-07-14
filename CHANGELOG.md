@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Creating files and directories now prompts through `vim.ui.input`.
+- The directory picker now shows hidden directories (except gitignored ones).
 
 ### Fixed
 

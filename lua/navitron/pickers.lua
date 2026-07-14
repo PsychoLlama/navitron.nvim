@@ -15,7 +15,14 @@ function M.find_directory(opts)
   pickers
     .new(opts, {
       prompt_title = 'Directory',
-      finder = finders.new_oneshot_job({ 'fd', '--type', 'directory' }, {
+      finder = finders.new_oneshot_job({
+        'fd',
+        '--type',
+        'directory',
+        '--hidden',
+        '--exclude',
+        '.git/',
+      }, {
         cwd = opts.cwd,
         entry_maker = function(entry)
           return {
