@@ -1,5 +1,5 @@
 {
-  description = "Development environment";
+  description = "File browser built for neovim";
 
   inputs = {
     systems.url = "github:nix-systems/default";
