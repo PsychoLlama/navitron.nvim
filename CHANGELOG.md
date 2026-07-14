@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The file and directory pickers fall back to `fdfind`.
+
+### Fixed
+
+- The file picker includes `.`-prefixed files now, matching the directory picker.
+
 ## [0.3.0] - 2026-07-14
 
 ### Added

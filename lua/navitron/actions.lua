@@ -205,6 +205,10 @@ end
 function M.find_file()
   require('telescope.builtin').find_files({
     cwd = vim.b.navitron.path,
+    find_command = require('navitron.fd').command({
+      '--type',
+      'file',
+    }),
   })
 end
 

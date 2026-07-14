@@ -15,23 +15,19 @@ function M.find_directory(opts)
   pickers
     .new(opts, {
       prompt_title = 'Directory',
-      finder = finders.new_oneshot_job({
-        'fd',
-        '--type',
-        'directory',
-        '--hidden',
-        '--exclude',
-        '.git/',
-      }, {
-        cwd = opts.cwd,
-        entry_maker = function(entry)
-          return {
-            path = vim.fs.joinpath(opts.cwd, entry),
-            display = entry,
-            ordinal = entry,
-          }
-        end,
-      }),
+      finder = finders.new_oneshot_job(
+        require('navitron.fd').command({ '--type', 'directory' }),
+        {
+          cwd = opts.cwd,
+          entry_maker = function(entry)
+            return {
+              path = vim.fs.joinpath(opts.cwd, entry),
+              display = entry,
+              ordinal = entry,
+            }
+          end,
+        }
+      ),
       sorter = conf.generic_sorter(opts),
       attach_mappings = function(prompt_bufnr)
         actions.select_default:replace(function()
