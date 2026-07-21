@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `<S-CR>` opens the entry under the cursor, same as `<CR>`.
+
 ### Changed
 
 - The file and directory pickers fall back to `fdfind`.

@@ -15,7 +15,7 @@ describe('config', function()
     local current = config.get()
 
     assert.same({ 'h', '-' }, current.keymaps[actions.open_parent])
-    assert.same({ 'l', '<cr>' }, current.keymaps[actions.open])
+    assert.same({ 'l', '<cr>', '<s-cr>' }, current.keymaps[actions.open])
     assert.equal(actions.open, current.actions[actions.open])
   end)
 
@@ -30,7 +30,7 @@ describe('config', function()
 
     assert.equal('x', current.keymaps[actions.open_parent])
     -- Untouched defaults are preserved.
-    assert.same({ 'l', '<cr>' }, current.keymaps[actions.open])
+    assert.same({ 'l', '<cr>', '<s-cr>' }, current.keymaps[actions.open])
   end)
 
   it('overrides an action handler independently of its keymap', function()
