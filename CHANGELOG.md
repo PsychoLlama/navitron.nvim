@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-09
+
 ### Added
 
 - `<S-CR>` opens the entry under the cursor, same as `<CR>`.
@@ -57,7 +59,8 @@ First tagged release (unstable).
 - Statusline updates to reflect the current directory.
 - Configurable actions and keymaps, overridable through `setup`.
 
-[Unreleased]: https://github.com/PsychoLlama/navitron.nvim/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/PsychoLlama/navitron.nvim/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/PsychoLlama/navitron.nvim/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/PsychoLlama/navitron.nvim/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/PsychoLlama/navitron.nvim/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/PsychoLlama/navitron.nvim/commits/v0.1.0
