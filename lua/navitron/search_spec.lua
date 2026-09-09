@@ -87,4 +87,13 @@ describe('search', function()
     assert.equal('link', entry.type)
     assert.equal(target, entry.target)
   end)
+
+  it('keeps the symlink target exactly as stored on disk', function()
+    local link = dir .. '/relative-link'
+    assert.is_true(vim.uv.fs_symlink('alpha.txt', link))
+
+    local entry = find(search(dir), 'relative-link')
+
+    assert.equal('alpha.txt', entry.target)
+  end)
 end)

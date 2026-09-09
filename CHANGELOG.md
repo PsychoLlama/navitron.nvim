@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The file and directory pickers fall back to `fdfind`.
+- Symlinks display their target exactly as stored on disk, so relative links no
+  longer expand to a full path.
 
 ### Fixed
 

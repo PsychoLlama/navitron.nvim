@@ -22,7 +22,7 @@ local function to_entry(_, path)
   end
 
   if result.type == 'link' then
-    result.target = vim.fn.resolve(path)
+    result.target = vim.uv.fs_readlink(path) or vim.fn.resolve(path)
   end
 
   return result
@@ -64,7 +64,7 @@ end
 --- @field path string Absolute path to the entry.
 --- @field name string The entry's basename.
 --- @field pretty_name string The basename, decorated for display.
---- @field target? string For links, the resolved target path.
+--- @field target? string For links, the raw target as stored on disk.
 
 --- Enumerate a directory and return a list of results.
 --- @param directory string
